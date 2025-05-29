@@ -40,11 +40,13 @@ def prepare_df(selected_metric, selected_countries):
     skipped = 0
     for country in selected_countries:
         for entry in data[country][selected_metric]:
-            if 'date' in entry and 'value' in entry:
+            date = entry.get('date')
+            value = entry.get('value')
+            if date is not None and value is not None:
                 rows.append({
                     'Country': country.title(),
-                    'Date': entry['date'],
-                    'Value': entry['value']
+                    'Date': date,
+                    'Value': value
                 })
             else:
                 skipped += 1
