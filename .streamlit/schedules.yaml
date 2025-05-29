@@ -1,0 +1,9 @@
+# Streamlit Community Cloud Scheduled Execution Config
+# See: https://docs.streamlit.io/streamlit-community-cloud/scheduled-execution
+
+schedules:
+  - name: Monthly CIS Data Update
+    command: python update_cis_data.py
+    # Run at 13:00 (1 PM) Baku time (UTC+4) on the 1st of every month
+    cron: '0 13 1 * *'
+    timezone: Asia/Baku
