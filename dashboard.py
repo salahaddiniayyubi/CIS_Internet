@@ -37,15 +37,22 @@ selected_countries = st.sidebar.multiselect("Select Countries", countries, defau
 # Prepare data for plotting
 def prepare_df(selected_metric, selected_countries):
     rows = []
+    skipped = 0
     for country in selected_countries:
         for entry in data[country][selected_metric]:
-            rows.append({
-                'Country': country.title(),
-                'Date': entry['date'],
-                'Value': entry['value']
-            })
+            if 'date' in entry and 'value' in entry:
+                rows.append({
+                    'Country': country.title(),
+                    'Date': entry['date'],
+                    'Value': entry['value']
+                })
+            else:
+                skipped += 1
+    if skipped > 0:
+        st.warning(f"{skipped} data points were skipped due to missing 'date' or 'value'.")
     df = pd.DataFrame(rows)
-    df['Date'] = pd.to_datetime(df['Date'])
+    if not df.empty:
+        df['Date'] = pd.to_datetime(df['Date'])
     return df
 
 df = prepare_df(selected_metric, selected_countries)
